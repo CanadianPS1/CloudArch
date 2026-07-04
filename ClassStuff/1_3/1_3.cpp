@@ -17,25 +17,25 @@ namespace ClassWork{
             return result;
         }
         public:
-            void RunLocalTests(){
-                std::cout<<"Hello World"<<std::endl;
-                nlohmann::json test = {
-                    {"inputText", "Hello AWS!"},
-                    {"inputText", "GoodBye AWS!"},
-                    {"inputText", "x"},
-                    {}
-                };
-                for(auto event : test){
-                    nlohmann::json result = LambdaHandler(test);
-                    std::cout<<"Input : "<<event<<std::endl;
-                    std::cout<<"Result : "<<result<<std::endl<<std::endl;
-                }
-            }
+            // void RunLocalTests(){
+            //     std::cout<<"Hello World"<<std::endl;
+            //     nlohmann::json test = {
+            //         {"inputText", "Hello AWS!"},
+            //         {"inputText", "GoodBye AWS!"},
+            //         {"inputText", "x"},
+            //         {}
+            //     };
+            //     for(auto event : test){
+            //         nlohmann::json result = LambdaHandler(test);
+            //         std::cout<<"Input : "<<event<<std::endl;
+            //         std::cout<<"Result : "<<result<<std::endl<<std::endl;
+            //     }
+            // }
     };
 };
 int main(){
     ClassWork::OneThree* test = new ClassWork::OneThree();
-    test->RunLocalTests();
+    //test->RunLocalTests();
     delete test;
     return 0;
 }
