@@ -49,9 +49,7 @@ class Session : public std::enable_shared_from_this<Session>{
         void do_write(http::response<http::string_body> res){
             auto self(shared_from_this());
             auto sp = std::make_shared<http::response<http::string_body>>(std::move(res));
-            http::async_write(socket_, *sp, [this,self,sp](beast::error_code ec, std::size_t){
-                socket_.shutdown(tcp::socket::shutdown_send);
-            });
+            http::async_write(socket_, *sp, [this,self,sp](beast::error_code ec, std::size_t){socket_.shutdown(tcp::socket::shutdown_send);});
         }
 };
 class Listener : public std::enable_shared_from_this<Listener>{
