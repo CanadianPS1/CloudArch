@@ -1,0 +1,13 @@
+how to put a docker image in aws
+
+docker build -t <image> .
+
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 448842988715.dkr.ecr.us-east-2.amazonaws.com
+
+aws ecr create-repository \
+    --repository-name <image> \
+    --region us-east-2
+
+docker tag <image>:latest 448842988715.dkr.ecr.us-east-2.amazonaws.com/<image>:latest
+
+docker push 448842988715.dkr.ecr.us-east-2.amazonaws.com/<image>:latest

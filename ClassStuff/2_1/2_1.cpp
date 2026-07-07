@@ -13,6 +13,20 @@ namespace http = boost::beast::http;
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
 http::response<http::string_body> handle_request(http::request<http::string_body> const& req){
+    if(req.method() == http::verb::get && req.target() == ""){
+        const auto now = std::chrono::system_clock::now();
+        const std::time_t t_c = std::chrono::system_clock::to_time_t(now);
+        nlohmann::json json_response = {{"message",  "Hello, welcome to the home page!"},
+                                        {"timeStamp", std::ctime(&t_c)},
+                                        {"URL", "http://www.3.142.198.149:8081"}};
+        http::response<http::string_body> res{http::status::ok, req.version()};
+        res.set(http::field::server, "Beast");
+        res.set(http::field::content_type, "application/json");
+        res.keep_alive(req.keep_alive());
+        res.body() = json_response.dump();
+        res.prepare_payload();
+        return res;
+    }
     if(req.method() == http::verb::get && req.target().starts_with("/hello-")){
         std::string target = std::string(req.target());
         target = target.substr(0, target.find('?'));
@@ -23,7 +37,7 @@ http::response<http::string_body> handle_request(http::request<http::string_body
         nlohmann::json json_response = {{"message",  "Hello " + userName + "!!!"},
                                         {"name", userName},
                                         {"timeStamp", std::ctime(&t_c)},
-                                        {"URL", "http://www.localhost:8081/hello-" + userName}};
+                                        {"URL", "http://www.3.142.198.149:8081/hello-" + userName}};
         http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, "Beast");
         res.set(http::field::content_type, "application/json");
@@ -72,23 +86,13 @@ class Listener : public std::enable_shared_from_this<Listener>{
             });
         };
 };
-void RunLocalTests(){
-    /*
-        http method
-        path
-        headers
-        queryStringparameters
-        body
-        pathparameters
-        request contexted
-    */
-}
 int main(){
     try{
         auto const address = net::ip::make_address("0.0.0.0");
         unsigned short port = 8081;
         net::io_context ioc{1};
         auto listener = std::make_shared<Listener>(ioc,tcp::endpoint{address,port});
+        std::cout<<"running on port: "<<std::to_string(port)<<std::endl;
         ioc.run();
     }catch(const std::exception& e){
         std::cerr<<"Error: "<< e.what()<<std::endl;

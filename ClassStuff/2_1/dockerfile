@@ -1,0 +1,24 @@
+FROM gcc:latest
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y \
+    libboost-system-dev \
+    libboost-thread-dev \
+    ca-certificates \
+    pkg-config \
+    zlib1g-dev \
+    libssl-dev \
+    libsasl2-dev \
+    libcurl4-openssl-dev \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY . .
+RUN g++ \
+    -std=c++20 \
+    -pthread \
+    2_1.cpp \
+    -lboost_thread \
+    -lboost_system \
+    -o 2_1
+EXPOSE 8081
+CMD ["./2_1"]
