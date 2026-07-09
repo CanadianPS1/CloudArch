@@ -6,10 +6,10 @@
 namespace AuditionMe{
     struct CreateUser{
         int static Checker(nlohmann::json req){
+            if(!req.contains("name") || !req.contains("email") || !req.contains("phone") || !req.contains("role")) return 1;
             std::string name = req["name"], email = req["email"], phone = req["phone"], role = req["role"];
-            if(name == "" || email == "" || phone == "" || role == "") return 1;
-            else if(role != "performer" || role != "director") return 2;
             std::regex emailRegex(R"(([\w\.-]+)@([\w\.-]+)\.([a-zA-Z]{2,}))");
+            if(role.compare("performer") != 0 && role.compare("director") != 0) return 2;
             if(!std::regex_match(email, emailRegex)) return 3;
             return 200;
         }

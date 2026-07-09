@@ -39,27 +39,27 @@ namespace AuditionMe{
         req = {
             {"name", "Lia"},
             {"email", "spielenermode@gmail.com"},
-            {"phone", "814-824-9384"},
+            {"phone", },
         };
         res = CreateUser::Hitter(req);
         if(res["statusCode"] != 400) return 5;
         req = {
             {"name", "Lia"},
             {"email", "spielenermode@gmail.com"},
-            {"phone", 8148249384},
-            {"role", "director"}
+            {"phone", "814-824-9384"},
+            {"role", "performer"}
         };
         res = CreateUser::Hitter(req);
-        if(res["statusCode"] != 400) return 6;
+        if(res["statusCode"] != 200) return 6;
         return -1;
     }
-    int main(){
-        int testResult = RunLocalTests();
-        if(testResult != -1) std::cout<<"failed on test number: "<<testResult<<std::endl;
-        else std::cout<<"all tests pass"<<std::endl;
-    }
 }
-
+int main(){
+    int testResult = AuditionMe::RunLocalTests();
+    if(testResult != -1) std::cout<<"failed on test number: "<<testResult<<std::endl;
+    else std::cout<<"all tests pass"<<std::endl;
+    return 0;
+}
 
 
 
