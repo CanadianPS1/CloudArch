@@ -1,4 +1,5 @@
 #include "CreateUser.hpp"
+#include "ListPerformances.hpp"
 #include "../include/nlohmann/json.hpp"
 #include <iostream>
 namespace AuditionMe{
