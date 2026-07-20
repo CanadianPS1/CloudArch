@@ -3,6 +3,10 @@
 #include <string>
 #include <uuid/uuid.h>
 #include <regex>
+#include <aws/core/Aws.h>
+#include <aws/dynamodb/DynamoDBClient.h>
+#include <aws/dynamodb/model/PutItemRequest.h>
+#include <aws/dynamodb/model/AttributeValue.h>
 namespace AuditionMe{
     struct CreateUser{
         int static Checker(nlohmann::json req){
@@ -43,6 +47,32 @@ namespace AuditionMe{
                 };
             }
             std::string uuid = GetUuid();
+            Aws::SDKOptions options;
+            Aws::InitAPI(options);{
+                Aws::Client::ClientConfiguration config;
+                config.region = "us-east-2";
+                Aws::DynamoDB::DynamoDBClient client(config);
+                Aws::DynamoDB::Model::PutItemRequest request;
+                Aws::Map<Aws::String,Aws::DynamoDB::Model::AttributeValue> item;
+                Aws::DynamoDB::Model::AttributeValue id;
+                Aws::DynamoDB::Model::AttributeValue name;
+                Aws::DynamoDB::Model::AttributeValue email;
+                Aws::DynamoDB::Model::AttributeValue phone;
+                Aws::DynamoDB::Model::AttributeValue role;
+                request.SetTableName("Users");
+                email.SetS(req["email"]);
+                phone.SetS(req["phone"]);
+                name.SetS(req["name"]);
+                role.SetS(req["role"]);
+                id.SetS(uuid);
+                item["userId"] = id;
+                item["name"] = name;
+                item["email"] = email;
+                item["phone"] = phone;
+                item["role"] = role;
+                request.SetItem(item);
+                auto outcome = client.PutItem(request);
+            }Aws::ShutdownAPI(options);
             std::string name = req["name"], email = req["email"], phone = req["phone"], role = req["role"];
             res = {
                 {"statusCode", 200},
