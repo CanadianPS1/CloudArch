@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <vector>
 #include "../include/nlohmann/json.hpp"
@@ -10,17 +11,21 @@ namespace AuditionMe{
         std::string title, director, venue, castingDirector, performanceDates, characters;
         bool isLive;
         std::string ToString(){
-            std::string live = "";
-            if(isLive) live = "true";
-            else live = "false";
-            return "{{\"title\", \"" + title + "\"},{\"director\", \"" + director + "\"},{\"venue\", \"" + venue + "\"},{\"isLive\",\"" + live +"\"},{\"castingDirector\",\"" + castingDirector +"\"},{\"characters\",\"" + characters +"\"},{\"performanceDates\",\"" + performanceDates +"\"}}";
+            return nlohmann::json{
+                {"title", title},
+                {"director", director},
+                {"venue", venue},
+                {"isLive", isLive},
+                {"castingDirector", castingDirector},
+                {"characters", characters},
+                {"performanceDates", performanceDates}
+            }.dump();
         }
     };
     static std::vector<Proformance> proformances;
     struct Proformances{
-        nlohmann::json static GetProformances(){
-            //temp thing for the test stuff
-            if(proformances.empty()) SetProformances();
+        nlohmann::json static GetProformances(const bool liveQueryString){
+            if(proformances.empty()) SetProformances(liveQueryString);
             if(proformances.empty()) return {};
             std::string fullString = "";
             for(Proformance proformance : proformances) fullString += proformance.ToString();
@@ -28,7 +33,7 @@ namespace AuditionMe{
             return res;
         }
         private:
-            void static SetProformances(){
+            void static SetProformances(const bool liveQueryString){
                 Aws::SDKOptions options;
                 Aws::InitAPI(options);{
                     Aws::Client::ClientConfiguration config;
@@ -36,6 +41,13 @@ namespace AuditionMe{
                     Aws::DynamoDB::DynamoDBClient client(config);
                     Aws::DynamoDB::Model::ScanRequest request;
                     request.SetTableName("Proformances");
+                    request.SetFilterExpression("isLive = :live");
+                    Aws::Map<Aws::String,Aws::DynamoDB::Model::AttributeValue> values;
+                    Aws::DynamoDB::Model::AttributeValue live;
+                    if(liveQueryString) live.SetBool(true);
+                    else live.SetBool(false);
+                    values[":live"] = live;
+                    request.SetExpressionAttributeValues(values);
                     do{
                         auto outcome = client.Scan(request);
                         const auto& res = outcome.GetResult().GetItems();

@@ -1,25 +1,15 @@
+#pragma once
 #include <string>
 #include <vector>
+#include "SearchProformances.hpp"
 #include "../include/nlohmann/json.hpp"
 #include <aws/core/Aws.h>
 #include <aws/core/client/ClientConfiguration.h>
 #include <aws/dynamodb/DynamoDBClient.h>
 #include <aws/dynamodb/model/ScanRequest.h>
 namespace AuditionMe{
-    struct Proformance{
-        std::string title, director, venue, castingDirector, performanceDates, characters;
-        bool isLive;
-        std::string ToString(){
-            std::string live = "";
-            if(isLive) live = "true";
-            else live = "false";
-            return "{{\"title\", \"" + title + "\"},{\"director\", \"" + director + "\"},{\"venue\", \"" + venue + "\"},{\"isLive\",\"" + live +"\"},{\"castingDirector\",\"" + castingDirector +"\"},{\"characters\",\"" + characters +"\"},{\"performanceDates\",\"" + performanceDates +"\"}}";
-        }
-    };
-    static std::vector<Proformance> proformances;
-    struct Proformances{
+    struct ListProformances{
         nlohmann::json static GetProformances(){
-            //temp thing for the test stuff
             if(proformances.empty()) SetProformances();
             if(proformances.empty()) return {};
             std::string fullString = "";

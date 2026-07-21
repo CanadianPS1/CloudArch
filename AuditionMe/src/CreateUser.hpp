@@ -1,3 +1,4 @@
+#pragma once
 #include "../include/nlohmann/json.hpp"
 #include "chrono"
 #include <string>
