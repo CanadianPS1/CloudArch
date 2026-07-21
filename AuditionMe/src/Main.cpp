@@ -1,4 +1,5 @@
 #include "CreateUser.hpp"
+#include "CreateProformance.hpp"
 #include "ListPerformances.hpp"
 #include "Auth.hpp"
 #include "../include/nlohmann/json.hpp"
