@@ -1,0 +1,14 @@
+{
+  "httpMethod": "GET",
+  "path": "/notes/REPLACE-WITH-ID-FROM-CREATE-RESPONSE",
+  "headers": {},
+  "queryStringParameters": null,
+  "body": null,
+  "pathParameters": {
+    "noteId": "REPLACE-WITH-ID-FROM-CREATE-RESPONSE"
+  },
+  "requestContext": {
+    "resourcePath": "/notes/{noteId}",
+    "httpMethod": "GET"
+  }
+}
