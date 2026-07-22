@@ -2,6 +2,7 @@
 #include "CreateProformance.hpp"
 #include "SearchProformances.hpp"
 #include "ListPerformances.hpp"
+#include "SignUpForAudition.hpp"
 #include "Auth.hpp"
 #include "../include/nlohmann/json.hpp"
 #include <iostream>
