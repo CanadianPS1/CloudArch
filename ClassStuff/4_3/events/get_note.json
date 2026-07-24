@@ -1,11 +1,11 @@
 {
   "httpMethod": "GET",
-  "path": "/notes/REPLACE-WITH-ID-FROM-CREATE-RESPONSE",
+  "path": "/notes/c504dd09-dd76-45dd-9db2-3e79cf5061e3",
   "headers": {},
   "queryStringParameters": null,
   "body": null,
   "pathParameters": {
-    "noteId": "REPLACE-WITH-ID-FROM-CREATE-RESPONSE"
+    "noteId": "c504dd09-dd76-45dd-9db2-3e79cf5061e3"
   },
   "requestContext": {
     "resourcePath": "/notes/{noteId}",
